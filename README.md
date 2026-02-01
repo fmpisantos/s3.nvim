@@ -25,7 +25,7 @@ Packer:
 
 ```lua
 use {
-  'yourname/s3.nvim',
+  'fmpisantos/s3.nvim',
   requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' }
 }
 ```
@@ -33,7 +33,7 @@ use {
 Lazy:
 
 ```lua
-{ 'yourname/s3.nvim', dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' } }
+{ 'fmpisantos/s3.nvim', dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' } }
 ```
 
 Setup / Configuration
