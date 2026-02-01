@@ -112,6 +112,14 @@ function M.list_s3(bucket, prefix, profile)
             local result = j:result()
             local entries = parse_s3_ls_output(result)
 
+            if prefix and prefix ~= "" then
+                table.insert(entries, 1, {
+                    name = "../",
+                    type = "up",
+                    display = "📁 ../",
+                })
+            end
+
             if #entries == 0 then
                 vim.notify("No files found in " .. s3_uri, vim.log.levels.WARN)
                 return
@@ -145,6 +153,19 @@ function M.show_telescope(entries, bucket, current_prefix, profile)
                 if entry.type == "folder" then
                     -- Recursive call
                     M.list_s3(bucket, current_prefix .. entry.name, profile)
+                elseif entry.type == "up" then
+                    -- Go up one level
+                    local new_prefix = ""
+                    if current_prefix and current_prefix ~= "" then
+                        -- Remove trailing slash
+                        local p = current_prefix:sub(1, -2)
+                        -- Find last slash
+                        local last_slash_idx = p:match("^.*()/")
+                        if last_slash_idx then
+                            new_prefix = p:sub(1, last_slash_idx)
+                        end
+                    end
+                    M.list_s3(bucket, new_prefix, profile)
                 else
                     -- Download file
                     M.download_file(bucket, current_prefix .. entry.name, profile)
